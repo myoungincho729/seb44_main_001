@@ -3,11 +3,12 @@ package com.momo.chat.entity;
 import com.momo.member.entity.Member;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
+@Getter
 @Entity
 @NoArgsConstructor
 public class MemberChatroom {
@@ -20,17 +21,17 @@ public class MemberChatroom {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "otherId")
-    private Member other;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroomId")
     private Chatroom chatroom;
 
+    private Long unreadCount;
+
     @Builder
-    public MemberChatroom(Member member, Member other, Chatroom chatroom) {
+    public MemberChatroom(Member member, Chatroom chatroom) {
         this.member = member;
-        this.other = other;
         this.chatroom = chatroom;
+        this.unreadCount = 0L;
     }
+
+
 }
