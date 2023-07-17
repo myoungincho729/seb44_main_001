@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 public class Chatroom {
@@ -19,20 +16,23 @@ public class Chatroom {
     @GeneratedValue
     private Long chatroomId;
     private String name;
-
     private String lastMessage;
     private LocalDateTime lastMessageSentTime;
 
-    @Builder
-    public Chatroom(String name, String lastMessage, LocalDateTime lastMessageSentTime) {
-        this.name = name;
-        this.lastMessage = lastMessage;
-        this.lastMessageSentTime = lastMessageSentTime;
+    @Enumerated(EnumType.STRING)
+    private RoomType roomType;
+
+    @Getter
+    public enum RoomType {
+        PERSONAL, GROUP
     }
 
     @Builder
-    public Chatroom(String name) {
+    public Chatroom(String name, String lastMessage, LocalDateTime lastMessageSentTime, RoomType roomType) {
         this.name = name;
+        this.lastMessage = lastMessage;
+        this.lastMessageSentTime = lastMessageSentTime;
+        this.roomType = roomType;
     }
 
     public void addMessage(Message message) {
